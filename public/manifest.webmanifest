@@ -2,8 +2,8 @@
   "name": "Huamanga: Tu Historia Viva",
   "short_name": "Huamanga",
   "description": "Guía turística inteligente para Ayacucho y Huamanga, Perú. Atractivos históricos, mapas interactivos, rutas y asistente inteligente.",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/HUAMANGA_TU_HISTORIA_VIVA_PROTOTIPO/index.html",
+  "scope": "/HUAMANGA_TU_HISTORIA_VIVA_PROTOTIPO/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#082A4A",
@@ -12,13 +12,13 @@
   "categories": ["travel", "lifestyle", "navigation"],
   "icons": [
     {
-      "src": "./icon-192.png",
+      "src": "/HUAMANGA_TU_HISTORIA_VIVA_PROTOTIPO/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "./icon-512.png",
+      "src": "/HUAMANGA_TU_HISTORIA_VIVA_PROTOTIPO/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

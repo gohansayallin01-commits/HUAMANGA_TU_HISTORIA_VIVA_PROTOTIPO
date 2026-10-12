@@ -1,10 +1,10 @@
 // Service Worker para "Huamanga: Tu Historia Viva"
 const CACHE_NAME = 'huamanga-v1.0.0';
 const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './favicon.svg',
-  './manifest.webmanifest'
+  '/HUAMANGA_TU_HISTORIA_VIVA_PROTOTIPO/',
+  '/HUAMANGA_TU_HISTORIA_VIVA_PROTOTIPO/index.html',
+  '/HUAMANGA_TU_HISTORIA_VIVA_PROTOTIPO/favicon.svg',
+  '/HUAMANGA_TU_HISTORIA_VIVA_PROTOTIPO/manifest.webmanifest'
 ];
 
 self.addEventListener('install', (event) => {
@@ -47,7 +47,7 @@ self.addEventListener('fetch', (event) => {
       return fetch(event.request).catch(() => {
         // Si no hay red y solicita HTML, devolver index.html
         if (event.request.headers.get('accept')?.includes('text/html')) {
-          return caches.match('./index.html');
+          return caches.match('/HUAMANGA_TU_HISTORIA_VIVA_PROTOTIPO/index.html');
         }
       });
     })
