@@ -1,0 +1,55 @@
+  updateAttractionInfo(id: string, info: Partial<Attraction>): Attraction | undefined {
+    const all = loadFromStorage();
+    let updated: Attraction | undefined;
+    const next = all.map((a) => {
+      if (a.id !== id) return a;
+      updated = normalizeAttraction({ ...a, ...info, id: a.id, lastModified: new Date().toISOString() });
+      return updated;
+    });
+    persist(next);
+    if (updated) this.logHistory('Actualizó información', updated.name, '-', updated.publicationStatus ?? '-');
+    return updated;
+  },
+
+  updateAttractionLocation(id: string, loc: { coordinates: { lat: number; lng: number } }): Attraction | undefined {
+    const all = loadFromStorage();
+    let updated: Attraction | undefined;
+    const next = all.map((a) => {
+      if (a.id !== id) return a;
+      updated = normalizeAttraction({ ...a, coordinates: loc.coordinates, id: a.id, lastModified: new Date().toISOString() });
+      return updated;
+    });
+    persist(next);
+    if (updated) this.logHistory('Actualizó ubicación', updated.name, '-', updated.publicationStatus ?? '-');
+    return updated;
+  },
+
+  updateAttractionImages(id: string, img: { images: string[]; imageMeta?: any[]; isReferentialImage?: boolean }): Attraction | undefined {
+    const all = loadFromStorage();
+    let updated: Attraction | undefined;
+    const next = all.map((a) => {
+      if (a.id !== id) return a;
+      updated = normalizeAttraction({ ...a, ...img, id: a.id, lastModified: new Date().toISOString() });
+      return updated;
+    });
+    persist(next);
+    if (updated) this.logHistory('Actualizó imágenes', updated.name, '-', updated.publicationStatus ?? '-');
+    return updated;
+  },
+
+  updateAttractionPublication(id: string, pub: {
+    publicationStatus: PublicationStatus;
+    isFeatured?: boolean;
+    isNearHuamanga?: boolean;
+    isActive?: boolean;
+  }): Attraction | undefined {
+    const all = loadFromStorage();
+    let updated: Attraction | undefined;
+    const next = all.map((a) => {
+      if (a.id !== id) return a;
+      updated = normalizeAttraction({
+        ...a,
+        ...pub,
+        isActive: pub.isActive ?? (pub.publicationStatus === 'publicado' || pub.publicationStatus === 'pendiente' || pub.publicationStatus === 'borrador'),
+        id: a.id,
+        lastModified: new Date().toISOString(),

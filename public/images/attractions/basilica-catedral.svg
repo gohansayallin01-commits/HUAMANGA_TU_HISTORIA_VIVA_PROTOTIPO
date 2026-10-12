@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400" role="img" aria-label="Basílica Catedral">
+  <defs>
+    <linearGradient id="bg-basilica-catedral-a" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0D3B66"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg-basilica-catedral-a)"/>
+  <circle cx="150" cy="120" r="70" fill="#F2D493" opacity="0.18"/><circle cx="470" cy="150" r="110" fill="#F2D493" opacity="0.10"/>
+  <path d="M 40 360 L 190 210 L 300 300 L 430 170 L 560 360 Z" fill="#000000" opacity="0.18"/>
+  <path d="M 150 360 L 270 240 L 380 330 L 470 250 L 580 360 Z" fill="#F2D493" opacity="0.22"/>
+  <circle cx="300" cy="140" r="34" fill="#F2D493" opacity="0.9"/>
+  <g transform="translate(300 140)">
+    <path d="M0 -18 L4 -4 L18 0 L4 4 L0 18 L-4 4 L-18 0 L-4 -4 Z" fill="#082A4A"/>
+  </g>
+  <text x="300" y="235" font-family="'Segoe UI', Arial, sans-serif" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle">Basílica Catedral</text>
+  <text x="300" y="262" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="#F2D493" text-anchor="middle" letter-spacing="1">AYACUCHO · PERÚ</text>
+  <rect x="0" y="372" width="600" height="28" fill="#000000" opacity="0.35"/>
+  <text x="300" y="391" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" fill="#F2D493" text-anchor="middle" letter-spacing="1.5">IMAGEN REFERENCIAL · DEMOSTRACIÓN</text>
+</svg>

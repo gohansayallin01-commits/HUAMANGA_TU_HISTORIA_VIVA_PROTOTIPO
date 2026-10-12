@@ -1,0 +1,261 @@
+﻿import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useI18n } from '../../i18n/i18nContext';
+import { storageService } from '../../services/storageService';
+import { useToast } from './ToastContext';
+import { 
+  Bell, 
+  Globe, 
+  Sparkles, 
+  RotateCcw, 
+  Briefcase, 
+  ShieldCheck, 
+  Menu, 
+  X, 
+  Check, 
+  Compass, 
+  AlertTriangle 
+} from 'lucide-react';
+
+interface HeaderProps {
+  onStartTour?: () => void;
+}
+export const Header: React.FC<HeaderProps> = ({ onStartTour }) => {
+  const { language, setLanguage, t } = useI18n();
+  const { showToast } = useToast();
+  const navigate = useNavigate();
+
+  const [showLangMenu, setShowLangMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showNavDrawer, setShowNavDrawer] = useState(false);
+
+  const notifications = storageService.getNotifications();
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  // Saludo segÃºn la hora del dÃ­a
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return t('greetings.morning');
+    if (hour < 19) return t('greetings.afternoon');
+    return t('greetings.evening');
+  };
+
+  const handleLanguageSelect = (lang: 'es' | 'en' | 'fr' | 'pt') => {
+    if (lang === 'fr' || lang === 'pt') {
+      showToast(`${lang.toUpperCase()} estarÃ¡ disponible prÃ³ximamente en la versiÃ³n productiva.`, 'info');
+      return;
+    }
+    setLanguage(lang);
+    setShowLangMenu(false);
+    showToast(lang === 'es' ? 'Idioma cambiado a EspaÃ±ol' : 'Language changed to English', 'success');
+  };
+
+  const handleExhibitionMode = () => {
+    storageService.resetAllToExhibitionState();
+  };
+
+  return (
+    <header className="sticky top-0 z-40 bg-ayacucho-night text-white shadow-soft">
+      {/* Banner de aviso acadÃ©mico discreto */}
+      <div className="bg-ayacucho-deep/90 border-b border-ayacucho-gold/20 px-2 sm:px-3 py-1.5 text-[9px] xs:text-[10px] sm:text-xs text-ayacucho-lightgold/90 text-center flex items-center justify-center gap-1.5 font-medium overflow-x-auto">
+        <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-ayacucho-gold" />
+        <span className="whitespace-nowrap">{t('app.academicDisclaimer')}</span>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 py-2.5 flex items-center justify-between gap-1 sm:gap-2">
+        {/* Identidad de Marca: Isotipo + Nombre */}
+        <Link to="/" className="flex items-center gap-2.5 group">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-ayacucho-gold to-ayacucho-lightgold p-1 shadow-sm flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+            <Compass className="w-6 h-6 text-ayacucho-night" />
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5">
+              <span className="font-bold text-base tracking-wide text-white font-cultural">HUAMANGA</span>
+              <span className="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-ayacucho-gold/20 text-ayacucho-lightgold border border-ayacucho-gold/30">
+                PROTOTIPO
+              </span>
+            </div>
+            <p className="text-[11px] text-ayacucho-lightgold/80 -mt-0.5 hidden xs:block">
+              {getGreeting()}
+            </p>
+          </div>
+        </Link>
+
+        {/* Acciones de Cabecera */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* BotÃ³n DemostraciÃ³n Guiada (Para el Docente) */}
+          <button
+            onClick={onStartTour}
+            className="flex md:hidden items-center gap-1 px-2 py-1 rounded-lg bg-ayacucho-gold/20 hover:bg-ayacucho-gold/30 text-ayacucho-lightgold text-xs font-medium border border-ayacucho-gold/40 transition"
+            title="Iniciar recorrido guiado de evaluaciÃ³n"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-ayacucho-gold" />
+          </button>
+
+          {/* BotÃ³n Modo ExposiciÃ³n */}
+          <button
+            onClick={handleExhibitionMode}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition"
+            title="Restablecer datos para la exposiciÃ³n acadÃ©mica"
+          >
+            <RotateCcw className="w-3.5 h-3.5 text-ayacucho-gold" />
+              <span className="hidden md:inline">{t('app.exhibitionMode')}</span>
+          </button>
+
+          {/* Selector de Idioma */}
+          <div className="relative">
+            <button
+              onClick={() => setShowLangMenu(!showLangMenu)}
+              className="flex items-center gap-1 p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition"
+              aria-label="Seleccionar idioma"
+            >
+              <Globe className="w-4 h-4 text-ayacucho-gold" />
+              <span className="uppercase">{language}</span>
+            </button>
+
+            {showLangMenu && (
+              <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-modal py-1.5 text-slate-800 z-50 animate-slide-up border border-slate-100">
+                <div className="px-3 py-1 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  {t('welcome.selectLanguage')}
+                </div>
+                <button
+                  onClick={() => handleLanguageSelect('es')}
+                  className="w-full flex items-center justify-between px-3 py-2 text-xs font-medium hover:bg-ayacucho-bg transition"
+                >
+                  <span className="flex items-center gap-2">ðŸ‡ªðŸ‡¸ EspaÃ±ol</span>
+                  {language === 'es' && <Check className="w-4 h-4 text-ayacucho-success" />}
+                </button>
+                <button
+                  onClick={() => handleLanguageSelect('en')}
+                  className="w-full flex items-center justify-between px-3 py-2 text-xs font-medium hover:bg-ayacucho-bg transition"
+                >
+                  <span className="flex items-center gap-2">ðŸ‡ºðŸ‡¸ English</span>
+                  {language === 'en' && <Check className="w-4 h-4 text-ayacucho-success" />}
+                </button>
+                <button
+                  onClick={() => handleLanguageSelect('fr')}
+                  className="w-full flex items-center justify-between px-3 py-2 text-xs text-slate-400 hover:bg-slate-50 transition"
+                >
+                  <span className="flex items-center gap-2">ðŸ‡«ðŸ‡· FranÃ§ais</span>
+                  <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-500 font-medium">{t('welcome.soon')}</span>
+                </button>
+                <button
+                  onClick={() => handleLanguageSelect('pt')}
+                  className="w-full flex items-center justify-between px-3 py-2 text-xs text-slate-400 hover:bg-slate-50 transition"
+                >
+                  <span className="flex items-center gap-2">ðŸ‡§ðŸ‡· PortuguÃªs</span>
+                  <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-500 font-medium">{t('welcome.soon')}</span>
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Notificaciones */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setShowNotifications(!showNotifications);
+                storageService.markNotificationsRead();
+              }}
+              className="relative p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition"
+              aria-label="Ver notificaciones"
+            >
+              <Bell className="w-4 h-4" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-ayacucho-alert rounded-full border-2 border-ayacucho-night" />
+              )}
+            </button>
+
+            {showNotifications && (
+              <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-modal text-slate-800 z-50 animate-slide-up border border-slate-100 overflow-hidden">
+                <div className="px-4 py-3 bg-ayacucho-night text-white flex items-center justify-between">
+                  <h4 className="font-semibold text-xs">Notificaciones locales</h4>
+                  <span className="text-[10px] text-ayacucho-lightgold">DemostraciÃ³n</span>
+                </div>
+                <div className="divide-y divide-slate-100 max-h-64 overflow-y-auto">
+                  {notifications.map(n => (
+                    <div key={n.id} className="p-3 hover:bg-slate-50 transition">
+                      <p className="text-xs font-semibold text-ayacucho-night">{n.title}</p>
+                      <p className="text-[11px] text-slate-600 mt-0.5">{n.message}</p>
+                      <span className="text-[10px] text-slate-400 mt-1 block">{n.time}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* MenÃº hamburguesa para accesos directos (Negocio / Admin / Planes) */}
+          <button
+            onClick={() => setShowNavDrawer(!showNavDrawer)}
+            className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition"
+            aria-label="Abrir menÃº extendido"
+          >
+            {showNavDrawer ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Drawer desplegable para mÃ³dulos secundarios (Negocios, Admin, Planes) */}
+      {showNavDrawer && (
+        <div className="bg-ayacucho-deep border-t border-ayacucho-gold/20 px-2 sm:px-4 py-3 animate-slide-up">
+          <div className="max-w-7xl mx-auto flex flex-wrap gap-2 items-center justify-between">
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => {
+                  setShowNavDrawer(false);
+                  navigate('/negocios');
+                }}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition whitespace-nowrap"
+              >
+                <Briefcase className="w-3.5 h-3.5 text-ayacucho-gold shrink-0" />
+                <span className="truncate">{t('app.businessDemo')}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowNavDrawer(false);
+                  navigate('/acceso-administrativo');
+                }}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition whitespace-nowrap max-w-[140px] sm:max-w-none"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span className="truncate">{t('app.adminPanel')}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowNavDrawer(false);
+                  navigate('/planes');
+                }}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition whitespace-nowrap"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                <span className="truncate">Planes y MonetizaciÃ³n</span>
+              </button>
+
+              {onStartTour && (
+                <button
+                  onClick={() => {
+                    setShowNavDrawer(false);
+                    onStartTour();
+                  }}
+                  className="md:hidden flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-ayacucho-gold/20 text-ayacucho-lightgold text-xs font-medium transition whitespace-nowrap"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-ayacucho-gold shrink-0" />
+                  <span className="truncate">{t('app.guidedTour')}</span>
+                </button>
+              )}
+            </div>
+
+            <span className="text-[10px] sm:text-[11px] text-slate-300 italic whitespace-nowrap">
+              Escuela Superior La Pontificia Â· 2026
+            </span>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+};
+
+}

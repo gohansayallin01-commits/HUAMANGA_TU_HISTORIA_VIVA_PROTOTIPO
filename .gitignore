@@ -1,0 +1,43 @@
+# Dependencias
+node_modules/
+
+# Entornos y secretos
+.env
+.env.*
+*.local
+
+# Compilación / salidas
+dist/
+dist-ssr/
+*.tsbuildinfo
+
+# Registros temporales y backups del proyecto
+*.log
+.admin_backup/
+.presentation_backup/
+imagenes_definitivas_exposicion/
+node_modules/.cache-official-attractions.mjs
+
+# Archivos comprimidos / instaladores
+*.zip
+*.rar
+*.7z
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Notas del editor / IDE
+.vscode/
+.idea/
+
+# Archivos sueltos heredados de presentaciones anteriores
+ABRIR_ENLACE_PUBLICO.url
+ABRIR_HUAMANGA.bat
+LEEME_PRIMERO.txt
+
+# El contenido oficial y las imágenes definitivas SÍ se publican:
+#   public/images/attractions/
+#   src/data/official-attractions.json
+#   .github/workflows/deploy.yml
