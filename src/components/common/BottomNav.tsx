@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Compass, Map, Heart, User } from 'lucide-react';
+import { Home, Compass, Map, Heart } from 'lucide-react';
 import { useI18n } from '../../i18n/i18nContext';
 import { useFavorites } from '../../hooks/useFavorites';
 
@@ -13,7 +13,6 @@ export const BottomNav: React.FC = () => {
     { to: '/explorar', label: t('nav.explore'), icon: Compass },
     { to: '/mapa', label: t('nav.map'), icon: Map },
     { to: '/favoritos', label: t('nav.favorites'), icon: Heart, badge: favorites.length },
-    { to: '/perfil', label: t('nav.profile'), icon: User },
   ];
 
   return (

@@ -31,11 +31,13 @@ import { UsersAdminPage } from './pages/admin/UsersAdminPage';
 import { ReportsPage } from './pages/admin/ReportsPage';
 import { SettingsPage } from './pages/admin/SettingsPage';
 
-// Componente que decide si mostrar bienvenida en primera visita
+// Componente que decide si redirigir a la portada de bienvenida en la primera visita.
+// Redirige a la ruta dedicada /bienvenida para que el ingreso posterior a "/"
+// produzca un cambio real de ruta y el portal público se renderice correctamente.
 const InitialRouteHandler: React.FC = () => {
   const welcomeSeen = localStorage.getItem('huamanga_welcome_seen');
   if (!welcomeSeen) {
-    return <WelcomePage />;
+    return <Navigate to="/bienvenida" replace />;
   }
   return <HomePage />;
 };
